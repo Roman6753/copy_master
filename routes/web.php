@@ -16,9 +16,8 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 Route::view('/cart', 'cart')->name('cart')->middleware('auth');
 
-// Админ панель
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/categories', [CategoryController::class, 'index'])->name('admin.categories');
-    Route::post('/categories', [CategoryController::class, 'store']);
-    Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+    Route::post('/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
+    Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 });

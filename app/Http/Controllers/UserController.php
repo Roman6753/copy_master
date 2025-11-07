@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-class AuthController extends Controller
+class UserController extends Controller
 {
     public function showLoginForm()
     {
@@ -21,7 +21,7 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt(['login' => $credentials['login'], 'password' => $credentials['password']])) {
             $request->session()->regenerate();
             return redirect()->intended('/');
         }
@@ -55,6 +55,7 @@ class AuthController extends Controller
             'login' => $validated['login'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'is_admin' => false,
         ]);
 
         Auth::login($user);
